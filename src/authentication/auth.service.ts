@@ -80,12 +80,12 @@ verifyCode=AsyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
         return next(new ApiErrors(`${req.__('check_login')}`,403))
     }
     const decodedToken:any=Jwt.verify(token,process.env.JWT_RESET_KEY!)
-   ;
+   
     
     const user:Users|null=await usersSchema.findOne({
-        // _id:decodedToken._id,
+        _id:decodedToken._id,
         passwordResetCode:  crypto.createHash('sha256').update(req.body.resetcode).digest("hex"),
-        // passwordResetCodeExpires:{$gt:Date.now()}
+        passwordResetCodeExpires:{$gt:Date.now()}
     })
    if(!user) return next (new ApiErrors(`${req.__('check_login check_code_valid')}`,403))
   user.passwordResetCodeVerify=true
@@ -121,6 +121,29 @@ forgetPassword=AsyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
     const token=Token.createRestToken(user._id)
     res.status(200).json({message:"reset code sent successfully",Token:token})
    })
+   resetPassword = AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    let token: string = '';
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
+        token = req.headers.authorization.split(' ')[1];
+    else return next(new ApiErrors(`${req.__('check_reset_code')}`, 403));
+
+    const decoded: any = Jwt.verify(token, process.env.JWT_SECRET_RESET!);
+    const user: any = await usersSchema.findOne({
+        _id: decoded._id,
+        passwordResetCodeVerify: true,
+    });
+    if (!user) return next(new ApiErrors(`${req.__('check_code_verify')}`, 403));
+
+    user.password = req.body.password;
+    user.passwordResetCodeExpires = undefined;
+    user.passwordResetCode = undefined;
+    user.passwordResetCodeVerify = undefined;
+    user.passwordChangedAt = Date.now();
+    if (user.image && user.image.startsWith(`${process.env.BASE_URL}`)) user.image = user.image.split('/').pop();
+    await user.save({validateModifiedOnly: true});
+
+    res.status(200).json({success: true});
+})
 }
 const authenticationServices = new AuthenticationServices()
 export default authenticationServices

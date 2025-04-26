@@ -12,4 +12,5 @@ authRouter.route('/forget-password')
 .post(authValidation.forgetPassword,authenticationServices.forgetPassword)
 authRouter.route('/verify-code')
 .post(authenticationServices.verifyCode)
+authRouter.post('/reset-password', authValidation.changePassword, authenticationServices.resetPassword);
 export default authRouter

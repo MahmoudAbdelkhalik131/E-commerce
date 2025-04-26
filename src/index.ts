@@ -8,13 +8,15 @@ import userRouter from "./users/users.routes"
 import authRouter from "./authentication/auth.routes"
 import Users from "./users/users.interface"
 import profileRouter from "./profile/profile.routes"
+import googleRoute from "./google/google.Route"
 declare global {
-    namespace Express { 
-        interface Request {
-            
-        }
+    namespace Express {
+    
+      interface Request {
+        
+      }
     }
-}
+  }
 declare module "express"{
     interface Request{
         filterSubcategoryUsingCategory?:any,
@@ -24,6 +26,7 @@ declare module "express"{
     
 }
 const routes=(app:express.Application)=>{
+app.use('/auth/google',googleRoute)
 app.use('/api/v1/categories',categoriesRouter)
 app.use('/api/v1/profile',profileRouter)
 app.use('/api/v1/users',userRouter)

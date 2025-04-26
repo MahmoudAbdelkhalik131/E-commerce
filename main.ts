@@ -1,6 +1,8 @@
 import express from "express";
 import dbConnection from "./config/dataBase";
 import dotenv from 'dotenv'
+import cors from "cors";
+import cookieParser from "cookie-parser";
 import routes from "./src";
 import i18n from "i18n";
 import { Server } from "http";
@@ -10,6 +12,13 @@ import MongoSanitize from "express-mongo-sanitize";
 
 const app: express.Application = express();
 app.use(express.json({ limit: "10kb" }));
+app.use(cors({
+  origin:['http://localhost:4200'],
+  credentials:true,
+  methods:['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders:['Content-Type','Authorization']
+}))
+app.use(cookieParser())
 app.use(MongoSanitize())
 let server:Server
 dotenv.config()

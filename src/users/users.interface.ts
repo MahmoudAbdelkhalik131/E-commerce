@@ -1,9 +1,9 @@
 import { Document } from "mongoose"
 interface Users extends Document{
+        [x: string]: any;
         readonly username: string;
         readonly email: string;
         readonly name: string;
-        readonly token: string;
         password: string;
         readonly role: Role;
         readonly active: boolean;
