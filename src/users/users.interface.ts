@@ -1,4 +1,4 @@
-import { Document } from "mongoose"
+import mongoose, { Document } from "mongoose"
 interface Users extends Document{
         [x: string]: any;
         readonly username: string;
@@ -8,6 +8,7 @@ interface Users extends Document{
         readonly role: Role;
         readonly active: boolean;
         googleId:string;
+        wishList:mongoose.Schema.Types.ObjectId[];
         hasPassword: boolean;
         passwordChangedAt: Date | number;
         passwordResetCode: string | undefined;

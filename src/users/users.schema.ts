@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
-
 import Users from "./users.interface";
 import bcrypt from "bcryptjs";
-
 const usersSchema = new mongoose.Schema<Users>(
   {
     username: { type: String },
@@ -17,6 +15,7 @@ const usersSchema = new mongoose.Schema<Users>(
       default: "user",
     },
     hasPassword: { type: Boolean, default: true },
+    wishlist:{type:mongoose.Schema.Types.ObjectId, ref: "products"},
     image: { type: String, default: "user-default.jpg" },
     passwordChangedAt: Date,
     passwordResetCode: String,
