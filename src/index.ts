@@ -2,6 +2,8 @@ import express from "express"
 import categoriesRouter from "./categories/categories.routes"
 import subCategoriesRouter from "./subcategories/subcategories.routes"
 import ApiErrors from "./utils/apiErrors"
+import AddressRouter from "./address/address.routes"
+import wishListRouter from "./wishlist/wishlist.routes"
 import globalErrors from "./middleware/errors.middleware"
 import productsRouter from "./products/products.routes"
 import userRouter from "./users/users.routes"
@@ -9,14 +11,6 @@ import authRouter from "./authentication/auth.routes"
 import Users from "./users/users.interface"
 import profileRouter from "./profile/profile.routes"
 import googleRoute from "./google/google.Route"
-declare global {
-    namespace Express {
-    
-      interface Request {
-        
-      }
-    }
-  }
 declare module "express"{
     interface Request{
         filterSubcategoryUsingCategory?:any,
@@ -27,6 +21,8 @@ declare module "express"{
 }
 const routes=(app:express.Application)=>{
 app.use('/auth/google',googleRoute)
+app.use('/api/v1/wishlist',wishListRouter)
+app.use('/api/v1/address',AddressRouter)
 app.use('/api/v1/categories',categoriesRouter)
 app.use('/api/v1/profile',profileRouter)
 app.use('/api/v1/users',userRouter)

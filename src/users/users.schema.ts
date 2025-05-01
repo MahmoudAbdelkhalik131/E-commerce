@@ -16,6 +16,12 @@ const usersSchema = new mongoose.Schema<Users>(
     },
     hasPassword: { type: Boolean, default: true },
     wishlist:{type:mongoose.Schema.Types.ObjectId, ref: "products"},
+    address: [{
+      street: String,
+      city: String,
+      state: String,
+      zip: String,
+  }],
     image: { type: String, default: "user-default.jpg" },
     passwordChangedAt: Date,
     passwordResetCode: String,

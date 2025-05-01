@@ -27,6 +27,7 @@ login=AsyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
     if(!user|| !(await bcrypt.compare(req.body.password,user.password)))
          return next (new ApiErrors("Invalid Email Or Password",401))
     const Token =  token.createToken(user._id,user.role)
+    req.user=user
     res.status(200).json({data:user,token:Token})
       
 })

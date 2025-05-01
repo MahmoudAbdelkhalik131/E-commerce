@@ -8,6 +8,7 @@ interface Users extends Document{
         readonly role: Role;
         readonly active: boolean;
         googleId:string;
+        address: Address[];
         wishList:mongoose.Schema.Types.ObjectId[];
         hasPassword: boolean;
         passwordChangedAt: Date | number;
@@ -17,5 +18,12 @@ interface Users extends Document{
         image: string;
     }
 type Role = "admin" | "employee" | "user";
+
+export interface Address {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+}
 
 export default Users
