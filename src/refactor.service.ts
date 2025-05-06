@@ -8,7 +8,7 @@ class RefactorServices {
   getAll = <modelType>(model: mongoose.Model<any>,modelName?:string) =>
     AsyncHandler(async (req: Request, res: Response,next:NextFunction) => {
         let filterData:any={}
-        if (req.filterSubcategoryUsingCategory) filterData=req.filterSubcategoryUsingCategory
+        if (req.filterById) filterData=req.filterById
         const documentCount=await model.find(filterData).countDocuments()
         const features=new Features( model.find(filterData),req.query).sort().limitFields().search(modelName!).pagination(documentCount)
        const{mongooseQuery,paginationResult}=features

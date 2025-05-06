@@ -2,7 +2,9 @@ import { Router,Request,Response,NextFunction } from "express";
 import productsServices from "./products.services";
 import productsValidation from "./products.validation";
 import authenticationServices from "../authentication/auth.service";
-const productsRouter: Router = Router();
+import ReviewsRouter from "../reviews/review.routes";
+const productsRouter: Router = Router({mergeParams:true});
+productsRouter.use('/:productId/reviews',ReviewsRouter)
 productsRouter
   .route("/")
   .get(productsServices.getAll)

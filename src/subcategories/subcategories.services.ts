@@ -9,7 +9,7 @@ class SubCategoriesServices {
     if (req.params.categoryId) {
       filterSubcategoryUsingCategory.category = req.params.categoryId;
     }
-    req.filterSubcategoryUsingCategory = filterSubcategoryUsingCategory;
+    req.filterById = filterSubcategoryUsingCategory;
     next();
   };
   setCategoryId = (req: Request, res: Response, next: NextFunction) => {
