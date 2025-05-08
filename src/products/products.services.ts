@@ -7,7 +7,7 @@ import { Request,Response,NextFunction } from "express";
 import sharp from 'sharp'
 class ProductsServices {
   getAll = refactorServices.getAll<Products>(productsSchema, "products");
-  getOne = refactorServices.getOne<Products>(productsSchema);
+  getOne = refactorServices.getOne<Products>(productsSchema,'reviews');
   createOne = refactorServices.create<Products>(productsSchema);
   deleteOne = refactorServices.deleteOne<Products>(productsSchema);
   updateOne = refactorServices.updateOne<Products>(productsSchema);

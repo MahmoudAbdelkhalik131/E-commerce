@@ -18,13 +18,15 @@ class RefactorServices {
       }
       res.status(200).json({ pagenation:paginationResult,length:documents.length,data: documents });
     });
-  getOne = <modelType>(model: mongoose.Model<any>) =>
+  getOne = <modelType>(model: mongoose.Model<any>,populationOption?:string) =>
     AsyncHandler(async (req: Request, res: Response,next:NextFunction) => {
-      const documents: modelType | null = await model.findById(req.params.id);
+      let query: any =  model.findById(req.params.id)
+      if(populationOption) query=query.populate(populationOption)
+      const documents: modelType | null =  await query
       if (!documents) {
        return next(new ApiErrors(`${req.__('not_found')}`,400))
       }
-      res.status(200).json({ data:sanatization.User(documents) });
+      res.status(200).json({ data:documents});
     });
   create = <modelType>(model: mongoose.Model<any>) =>
     AsyncHandler(async (req: Request, res: Response,next:NextFunction) => {
