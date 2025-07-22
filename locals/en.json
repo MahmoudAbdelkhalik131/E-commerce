@@ -3,6 +3,7 @@
 	"not_found": "Data not found",
 	"wrong_password":"Please Enter Your Currant Password",
 	"invalid_id": "Invalid Id",
+	"review_already_exists": "You have already reviewed this product",
 	"validation_field": "Field Required",
 	"validation_value": "Invalid Value",
 	"validation_name": "This name already exits",
@@ -27,5 +28,6 @@
 	"check_password_changed": "Your password has been updated since you logged in last time. Please log in again.",
 	"check_active": "Your account is deactivated",
 	"allowed_to": "Privilege denied! You cannot perform this action",
-	"UserName already exist": "UserName already exist"
+	"UserName already exist": "UserName already exist",
+	"not_authorized": "You are not authorized to perform this action"
 }
