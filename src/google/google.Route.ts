@@ -6,8 +6,10 @@ const googleRoute: Router = Router();
 
 googleRoute.get('/', passport.authenticate('google', {scope: ['profile', 'email']}));
 googleRoute.get('/callback', passport.authenticate('google', {session: false}), (req: Request, res: Response) => {
-    
-    const token = req.user!.token;
+    if(!req.user){
+        res.json("you are not allowed")
+    }
+    const token = req.user?.token;
     res.cookie('token', token, {
         sameSite: 'strict',
         maxAge: 24 * 60 * 60 * 1000
