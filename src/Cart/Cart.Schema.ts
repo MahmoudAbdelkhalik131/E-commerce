@@ -3,11 +3,12 @@ import Carts from "./cart.interface";
 const CartSchema=new mongoose.Schema<Carts>({
     items:[{
       product:{type:mongoose.Schema.Types.ObjectId,ref:'products'},
-      quantity:Number,
+      quantity:{type:Number ,default:1},
       price:Number
     }],
     totelPrice:{type:Number},
     totelPriceAfterDiscount:{type:Number},
+    taxPrice:{type:Number},
     user:{type:mongoose.Schema.Types.ObjectId,ref:'users'}
 },{timestamps:true})
 CartSchema.pre<Carts>(/^find/,function(next){

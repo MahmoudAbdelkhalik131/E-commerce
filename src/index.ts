@@ -12,6 +12,7 @@ import Users from "./users/users.interface"
 import profileRouter from "./profile/profile.routes"
 import googleRoute from "./google/google.Route"
 import ReviewsRouter from "./reviews/review.routes"
+import cartRouter from "./Cart/Cart.routes"
 declare module "express"{
     interface Request{
         filterById?:any,
@@ -31,6 +32,7 @@ app.use('/api/v1/users',userRouter)
 app.use('/api/v1/auth',authRouter)
 app.use('/api/v1/subcategories',subCategoriesRouter)
 app.use('/api/v1/products',productsRouter)
+app.use('/api/v1/cart',cartRouter)
 app.all('*', (req: express.Request, res: express.Response, next: express.NextFunction): void => {
     next(new ApiErrors(`route ${req.baseUrl} not found`, 400));
 });
