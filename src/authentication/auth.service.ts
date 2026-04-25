@@ -42,7 +42,7 @@ protectedRoutes=AsyncHandler(async(req:Request,res:Response,next:NextFunction)=>
         token=req.headers.authorization.split(' ')[1]
     }
     else{
-        return next( new ApiErrors("Please Login first",401))
+        return next( new ApiErrors(req.__("check_login"),401))
     }
     const decodedToken:any= Jwt.verify(token,process.env.JWT_KEY!)
     // console.log(token)

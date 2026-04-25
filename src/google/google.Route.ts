@@ -15,7 +15,7 @@ googleRoute.get('/callback', passport.authenticate('google', {session: false}), 
         maxAge: 24 * 60 * 60 * 1000
     });
 
-    res.status(200).redirect(`http://localhost:3000/auth/google`)
+    res.status(200).redirect(`http://localhost:8080/auth/google`)
 });
 
 export default googleRoute;

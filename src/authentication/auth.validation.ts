@@ -33,6 +33,8 @@ class AuthValidation {
       .notEmpty()
       .withMessage((val, { req }) => req.__("validation_field"))
       .isLength({ min: 6, max: 20 })
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+      .withMessage("Password must contain at least one uppercase letter, one lowercase letter, one number and one special character")
       .withMessage((val, { req }) => req.__("validation_length_password")),
     body("confirmPassword")
       .notEmpty()

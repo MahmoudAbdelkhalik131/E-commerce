@@ -15,13 +15,13 @@ const usersSchema = new mongoose.Schema<Users>(
       default: "user",
     },
     hasPassword: { type: Boolean, default: true },
-    wishlist:{type:mongoose.Schema.Types.ObjectId, ref: "products"},
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "products" }],
     address: [{
       street: String,
       city: String,
       state: String,
       zip: String,
-  }],
+    }],
     image: { type: String, default: "user-default.jpg" },
     passwordChangedAt: Date,
     passwordResetCode: String,
@@ -38,7 +38,7 @@ const imagesUrl = (document: Users) => {
 
 usersSchema.post("init", imagesUrl).post("save", imagesUrl);
 usersSchema.pre<Users>("save", async function (next) {
-  if (!this.isModified("password")) 
+  if (!this.isModified("password"))
     next();
   this.password = await bcrypt.hash(this.password, 11);
   next();

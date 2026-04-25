@@ -29,5 +29,7 @@
 	"check_active": "Your account is deactivated",
 	"allowed_to": "Privilege denied! You cannot perform this action",
 	"UserName already exist": "UserName already exist",
-	"not_authorized": "You are not authorized to perform this action"
+	"not_authorized": "You are not authorized to perform this action",
+	"cart_empty": "Your cart is empty",
+	"wishlist_empty": "Your wishlist is empty"
 }

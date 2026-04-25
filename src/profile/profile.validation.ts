@@ -36,17 +36,14 @@ class ProfileValidation {
         validatorMiddleware
     ]
     updateOne = [
-        param('id').isMongoId().withMessage((val, {req}) => req.__('invalid_id')),
         body('name').optional()
             .isLength({min: 2, max: 50}).withMessage((val, {req}) => req.__('validation_length_short')),
         validatorMiddleware
     ]
     getOne = [
-        param('id').isMongoId().withMessage((val, {req}) => req.__('invalid_id')),
         validatorMiddleware
     ]
     deleteOne = [
-        param('id').isMongoId().withMessage((val, {req}) => req.__('invalid_id')),
         validatorMiddleware
     ]
     createPassword = [

@@ -9,6 +9,7 @@ class CartValidation {
       .withMessage((value, { req }) => req.__("validation_field"))
       .isMongoId()
       .withMessage((value, { req }) => req.__("invalid_id")),
+    validatorMiddleware,
   ];
   removeFromCart = [
     body("productId")
@@ -16,6 +17,7 @@ class CartValidation {
       .withMessage((value, { req }) => req.__("validation_field"))
       .isMongoId()
       .withMessage((value, { req }) => req.__("invalid_id")),
+    validatorMiddleware,
   ];
   updateProductQuantity = [
     body("productId")
@@ -23,11 +25,14 @@ class CartValidation {
       .withMessage((value, { req }) => req.__("validation_field"))
       .isMongoId()
       .withMessage((value, { req }) => req.__("invalid_id")),
-    body("quantity").custom(async (value, { req }) => {
-      if (value < 1) throw new Error("quantity must be greater than 0");
-      const product = await productsSchema.findById({
-        _id: req.body.productId,
-      });
+    body("quantity")
+      .notEmpty()
+      .withMessage((value, { req }) => req.__("validation_field"))
+      .isInt({ min: 1 })
+      .withMessage("quantity must be a positive integer")
+      .toInt()
+      .custom(async (value, { req }) => {
+      const product = await productsSchema.findById(req.body.productId);
       if (!product) throw new Error("There is no such product");
       if (value > product.quantity)
         throw new Error(`quantity must be less than ${product.quantity}`);

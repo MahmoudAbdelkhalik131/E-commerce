@@ -20,7 +20,7 @@
     "uuid": "^11.1.0",
     "xss": "^1.0.15"
   },
-  "name": "reality",
+  "name": "labella-backend",
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {

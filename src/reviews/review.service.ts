@@ -1,47 +1,33 @@
-import { NextFunction,Request,Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import refactorServices from "../refactor.service";
 import Reviews from "./review.interface";
 import ReviewSchema from "./review.schema";
 import ApiErrors from "../utils/apiErrors";
 import mongoose from "mongoose";
+import expressAsyncHandler from "express-async-handler";
 
 class ReviewsServices {
-    setIds=(req:Request,res:Response,next:NextFunction)=>{
-       if(req.user){
-        req.body.user=req.user
-       }
-       else if(!req.user){
-        return next(new ApiErrors(`${req.__('check_login')}`,400))
-       }
-       if(req.params.productId){
-        req.body.product=req.params.productId
-       }
-       else if(!req.params.productId){
-        return next(new ApiErrors(`${req.__('not_found')}`,400))
-       }
-       next()
-    }
-    getProductReviews(req:Request,res:Response,next:NextFunction){
-        let getProduct:any={}; 
-        if(req.params.productId){
-            getProduct.product=req.params.productId.toString()
-        }
-        req.filterById=getProduct
-        next()
-    }
-    getUserReviews(req:Request,res:Response,next:NextFunction){
-        let getUser:any={}; 
-        if(req.user){
-            getUser.user=req.user
-        }
-        req.filterById=getUser
-        next()
-    }
-    getAll=refactorServices.getAll<Reviews>(ReviewSchema,'reviews')
-    getOne=refactorServices.getOne<Reviews>(ReviewSchema)
-    create=refactorServices.create<Reviews>(ReviewSchema)
-    updateOne=refactorServices.updateOne<Reviews>(ReviewSchema)
-    deleteOne=refactorServices.deleteOne<Reviews>(ReviewSchema)
+  FilterData = (req: Request, res: Response, next: NextFunction) => {
+        const filterData: any = {};
+        if (req.params.productId) filterData.product = req.params.productId;
+        if (!req.params.productId && req.user && req.user.role === 'user') filterData.user = req.user._id
+        req.filterById = filterData;
+        next();
+  };
+  setIds(req: Request, res: Response, next: NextFunction) {
+        req.body.user = req.user!._id;
+        if (!req.body.product) req.body.product = req.params.productId;
+        next();
+    };
+  getAll = refactorServices.getAll<Reviews>(ReviewSchema, "reviews");
+  getOne = refactorServices.getOne<Reviews>(ReviewSchema);
+  create = refactorServices.create<Reviews>(ReviewSchema);
+  updateOne = refactorServices.updateOne<Reviews>(ReviewSchema);
+  deleteOne = refactorServices.deleteOne<Reviews>(ReviewSchema);
+  getUserReiviews = expressAsyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
+    const reviews=await ReviewSchema.find({user:req.user?._id})
+    res.status(200).json({data:reviews,lenght:reviews.length})
+  })
 }
-const reviewsServices=new ReviewsServices()
-export default reviewsServices
+const reviewsServices = new ReviewsServices();
+export default reviewsServices;

@@ -8,10 +8,10 @@ categoriesRouter.use("/:categoryId/subcategories", subCategoriesRouter);
 categoriesRouter
   .route("/")
   .get(categoriesServices.getAll)
-  .post(authenticationServices.protectedRoutes,authenticationServices.checkActive,authenticationServices.allowedTo("admin","employee"),categoriesValidation.createOne ,categoriesServices.create);
+  .post(authenticationServices.protectedRoutes,authenticationServices.checkActive,authenticationServices.allowedTo("admin","employee"),categoriesServices.uploadImage,categoriesServices.saveImage,categoriesValidation.createOne ,categoriesServices.create);
 categoriesRouter
   .route("/:id")
   .get(categoriesValidation.getOne,categoriesServices.getOne)
-  .put(authenticationServices.protectedRoutes,authenticationServices.checkActive,authenticationServices.allowedTo("admin","employee"),categoriesValidation.updateOne,categoriesServices.updateOne)
+  .put(authenticationServices.protectedRoutes,authenticationServices.checkActive,authenticationServices.allowedTo("admin","employee"),categoriesServices.uploadImage,categoriesServices.saveImage,categoriesValidation.updateOne,categoriesServices.updateOne)
   .delete(authenticationServices.protectedRoutes,authenticationServices.checkActive,authenticationServices.allowedTo("admin","employee"),categoriesValidation.deleteOne,categoriesServices.deleteOne);
 export default categoriesRouter;
