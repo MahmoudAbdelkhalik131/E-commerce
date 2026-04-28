@@ -15,9 +15,6 @@ declare global {
             readonly EMAIL_USERNAME: string;
             readonly EMAIL_PASSWORD: string;
             readonly APP_NAME: string;
-            readonly GOOGLE_CLIENT_ID: string;
-            readonly GOOGLE_CLIENT_SECRET: string;
-            readonly GOOGLE_CALLBACK: string;
             readonly Mongo: string;
             readonly CLOUDINARY_CLOUD_NAME: string;
             readonly CLOUDINARY_API_KEY: string
@@ -32,4 +29,4 @@ declare global {
             files?: any;
         }
     }
-}
+}
