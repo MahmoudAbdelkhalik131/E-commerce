@@ -10,7 +10,6 @@ import userRouter from "./users/users.routes";
 import authRouter from "./authentication/auth.routes";
 import Users from "./users/users.interface";
 import profileRouter from "./profile/profile.routes";
-import googleRoute from "./google/google.Route";
 import ReviewsRouter from "./reviews/review.routes";
 import cartRouter from "./Cart/Cart.routes";
 import orderRouter from "./order/order.routes";
@@ -21,7 +20,6 @@ const Routes = (app: express.Application) => {
   
   })};
 const routes = (app: express.Application) => {
-  app.use("/auth/google", googleRoute);
   app.use("/api/v1/wishlist", wishListRouter);
   app.use("/api/v1/reviews", ReviewsRouter);
   app.use("/api/v1/order", orderRouter);
