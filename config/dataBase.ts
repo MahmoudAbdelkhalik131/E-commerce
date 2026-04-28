@@ -1,5 +1,5 @@
 import mongoose from'mongoose'
-const dbConnection=()=>{mongoose.connect(process.env.DB!)
+const dbConnection=()=>{mongoose.connect(process.env.Mongo!)
     .then(()=>{console.log("DATA_BASE_CHECKED")})
 
 }

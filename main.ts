@@ -1,46 +1,58 @@
-import express from "express";
+import express, { Router } from "express";
 import dbConnection from "./config/dataBase";
-import dotenv from 'dotenv'
+import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import routes from "./src";
+import routes, { Routes } from "./src";
 import i18n from "i18n";
 import { Server } from "http";
 import path from "path";
-import hpp from 'hpp'
+import hpp from "hpp";
 import MongoSanitize from "express-mongo-sanitize";
 
 const app: express.Application = express();
+app.set("trust proxy", 1);
 app.use(express.json({ limit: "10kb" }));
-app.use(cors({
-  origin:['http://localhost:8080','http://localhost:8081','http://localhost:8082','http://localhost:8083'],
-  credentials:true,
-  methods:['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
-  allowedHeaders:['Content-Type','Authorization']
-}))
-app.use(cookieParser())
-app.use(MongoSanitize())
-let server:Server
-dotenv.config()
-app.use(express.static('uploads'))
-app.use(hpp({whitelist:['price']}))
+app.use(
+  cors({
+    origin: [
+      "http://localhost:8080",
+      "http://localhost:8081",
+      "http://localhost:8082",
+      "http://localhost:8083",
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "https://5af2b959--65e51189-9515-4488-8d6e-5e6ba41dd486.lovable.app"
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+app.use(cookieParser());
+app.use(MongoSanitize());
+let server: Server;
+dotenv.config();
+app.use(express.static("uploads"));
+app.use(hpp({ whitelist: ["price"] }));
 i18n.configure({
-locales:['en','ar'],
-directory:path.join(__dirname,'locals'),
-defaultLocale:'en',
-queryParameter:'language'
-}) 
-app.use(i18n.init)
-dbConnection()
-routes(app)
-server= app.listen(process.env.PORT,()=>{
-  console.log(`server started on port ${process.env.PORT}`)
-}) 
+  locales: ["en", "ar"],
+  directory: path.join(__dirname, "locals"),
+  defaultLocale: "en",
+  queryParameter: "language",
+});
+app.use(i18n.init);
+dbConnection();
+routes(app);
+server = app.listen(process.env.PORT, () => {
+  console.log(`server started on port ${process.env.PORT}`);
+});
 
-process.on('unhandledRejection', (err: Error) => {
+process.on("unhandledRejection", (err: Error) => {
   console.error(`unhandledRejection ${err.name} | ${err.message}`);
   server.close(() => {
-      console.error('shutting the application down');
-      process.exit(1);
+    console.error("shutting the application down");
+    process.exit(1);
   });
 });
+Routes(app)

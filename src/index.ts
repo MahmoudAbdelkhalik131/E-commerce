@@ -21,6 +21,11 @@ declare module "express" {
     user?: Users;
   }
 }
+const Routes = (app: express.Application) => {
+  app.get("/health", (req, res) => {
+    res.status(200).json({ status: "ok", uptime: process.uptime() });
+  
+  })};
 const routes = (app: express.Application) => {
   app.use("/auth/google", googleRoute);
   app.use("/api/v1/wishlist", wishListRouter);
@@ -46,4 +51,5 @@ const routes = (app: express.Application) => {
   );
   app.use(globalErrors);
 };
+export {Routes}
 export default routes;
