@@ -14,13 +14,7 @@ import googleRoute from "./google/google.Route";
 import ReviewsRouter from "./reviews/review.routes";
 import cartRouter from "./Cart/Cart.routes";
 import orderRouter from "./order/order.routes";
-declare module "express" {
-  interface Request {
-    filterById?: any;
-    files?: any;
-    user?: Users;
-  }
-}
+
 const Routes = (app: express.Application) => {
   app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok", uptime: process.uptime() });

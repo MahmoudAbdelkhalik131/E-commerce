@@ -13,7 +13,6 @@ class WishListServices {
     res.status(200).json({ data: user.wishlist })
   })
   addToWishList = AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    console.log('first')
     const user = await usersSchema.findByIdAndUpdate(req.user?._id, {
       $addToSet: { wishlist: req.body.productId }
     }, { new: true }).populate('wishlist')

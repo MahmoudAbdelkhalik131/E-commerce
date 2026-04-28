@@ -21,7 +21,7 @@ class CartServices {
   );
   clearCart = AsyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-      const cart: any = await cartSchema.findOneAndDelete({
+      await cartSchema.findOneAndDelete({
         user: req.user?._id,
       });
       res.status(204).json({ message: "Cart Cleared Successfully" });

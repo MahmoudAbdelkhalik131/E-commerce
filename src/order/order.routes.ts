@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ordersServices from "./oder.services";
+import ordersServices from "./order.services";
 import authenticationServices from "../authentication/auth.service";
 import orderValidation from "./order.validation";
 
