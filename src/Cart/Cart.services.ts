@@ -3,16 +3,15 @@ import { Request, Response, NextFunction } from "express";
 import cartSchema from "./Cart.Schema";
 import ApiErrors from "../utils/apiErrors";
 import productsSchema from "../products/products.schema";
-import { CartItems } from "./cart.interface";
+import Carts, { CartItems } from "./cart.interface";
 class CartServices {
   createCart = AsyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-      let cart = await cartSchema.findOne({ user: req.user!._id });
+      let cart: any = await cartSchema.findOne({ user: req.user!._id });
       if (!cart) {
         res
           .status(200)
           .json({ data: { items: [], totelPrice: 0, taxPrice: 0 } });
-        return;
       }
       cart.totelPrice = this.calculateTotalPRi(cart.items);
       cart.taxPrice = cart.totelPrice * 0.07;
