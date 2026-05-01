@@ -18,15 +18,8 @@ declare global {
             readonly Mongo: string;
             readonly CLOUDINARY_CLOUD_NAME: string;
             readonly CLOUDINARY_API_KEY: string
-            readonly CLOUDINARY_API_SECRET: string
-        }
-    }
-
-    namespace Express {
-        interface User extends Users {}
-        interface Request {
-            filterById?: any;
-            files?: any;
+            readonly CLOUDINARY_API_SECRET: string;
+            readonly ALLOWED_ORIGINS:string;
         }
     }
 }

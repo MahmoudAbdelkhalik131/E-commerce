@@ -29,9 +29,9 @@ class UsersServices {
   })
   uploadImage=uploadMultiFiles(['image'],[{name:'image',maxCount:1}])
   saveImage=AsyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
-    if(req.files.image){
+    if((req.files as any).image){
       const fileName=`user-${Date.now()}-image.webp`
-      await sharp(req.files.image[0].buffer)
+      await sharp((req.files as any).image[0].buffer)
       .webp({quality:90})
       .toFile(`uploads/images/users/${fileName}`)
       req.body.image=fileName

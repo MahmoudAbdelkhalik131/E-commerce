@@ -1,39 +1,57 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express, { Router } from "express";
 import dbConnection from "./config/dataBase";
-import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import routes, { Routes } from "./src";
 import i18n from "i18n";
-import { Server } from "http";
+import { METHODS, Server } from "http";
 import path from "path";
 import hpp from "hpp";
-import MongoSanitize from "express-mongo-sanitize";
+import compression from "compression";
+import helmet from "helmet";
 
+import MongoSanitize from "express-mongo-sanitize";
 const app: express.Application = express();
-app.set("trust proxy", 1);
-app.use(express.json({ limit: "10kb" }));
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : [];
+// app.set("trust proxy", 1);
 app.use(
   cors({
-    origin: [
-      "http://localhost:8080",
-      "http://localhost:8081",
-      "http://localhost:8082",
-      "http://localhost:8083",
-      "http://localhost:5173",
-      "http://localhost:3000",
-      "https://5af2b959--65e51189-9515-4488-8d6e-5e6ba41dd486.lovable.app"
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);// Allow requests with no origin (mobile apps, curl, Postman)
+      if(ALLOWED_ORIGINS.indexOf(origin)===-1){
+        console.warn(`Blocked CORS request from origin: ${origin}`);
+        return callback(new Error("Not allowed by CORS"), false);
+      }
+      return callback(null,true)
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: [
+      "X-CSRF-Token",
+      "Content-Type",
+      "Authorization",
+      "ngrok-skip-browser-warning",
+      "Cache-Control"
     ],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
+    optionsSuccessStatus: 204,
+    maxAge: 0, 
+  })
 );
+app.options("*", cors());
+app.use(express.json({ limit: "10kb" }));
+
 app.use(cookieParser());
 app.use(MongoSanitize());
+app.use(helmet({crossOriginResourcePolicy: {policy: 'cross-origin'}}));
+app.use(compression());
+
 let server: Server;
 dotenv.config();
-app.use(express.static("uploads"));
+dbConnection();
+
+app.use("/images", express.static("uploads/images"));
 app.use(hpp({ whitelist: ["price"] }));
 i18n.configure({
   locales: ["en", "ar"],
@@ -42,7 +60,7 @@ i18n.configure({
   queryParameter: "language",
 });
 app.use(i18n.init);
-dbConnection();
+Routes(app);
 routes(app);
 server = app.listen(process.env.PORT, () => {
   console.log(`server started on port ${process.env.PORT}`);
@@ -55,4 +73,3 @@ process.on("unhandledRejection", (err: Error) => {
     process.exit(1);
   });
 });
-Routes(app)
