@@ -28,7 +28,8 @@ const Routes = (app: express.Application) => {
   app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok", uptime: process.uptime() });
   
-  })};
+  });
+};
 const routes = (app: express.Application) => {
   app.use("/api/v1/wishlist", wishListRouter);
   app.use("/api/v1/reviews", ReviewsRouter);
