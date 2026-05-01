@@ -59,9 +59,15 @@ class Features {
   }
   filter() {
     const queryStringObj: any = { ...this.queryString };
-    const executedFields: string[] = ['page', 'limit', 'sort', 'fields', 'search', 'lang'];
+    const executedFields: string[] = ['page', 'limit', 'sort', 'fields', 'search', 'lang', 'language'];
     executedFields.forEach((field: string): void => {
       delete queryStringObj[field]
+    });
+    // Remove empty strings so we don't accidentally query for exact empty string matches
+    Object.keys(queryStringObj).forEach((key) => {
+      if (queryStringObj[key] === "") {
+        delete queryStringObj[key];
+      }
     });
     let queryStr: string = JSON.stringify(queryStringObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
