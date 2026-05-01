@@ -51,7 +51,8 @@ let server: Server;
 dotenv.config();
 dbConnection();
 
-app.use("/images", express.static(path.join(__dirname, "../uploads/images")));
+// Images are now served via Cloudinary CDN — local static serving no longer needed
+// app.use("/images", express.static(path.join(__dirname, "../uploads/images")));
 app.use(hpp({ whitelist: ["price"] }));
 i18n.configure({
   locales: ["en", "ar"],

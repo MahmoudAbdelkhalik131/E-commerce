@@ -4,9 +4,9 @@ import refactorServices from "../refactor.service";
 import { NextFunction,Request, Response} from "express";
 import usersSchema from "./users.schema";
 import Users from "./users.interface";
-import { uploadMultiFiles, uploadSingleFile } from "../middleware/upload.file.middleware";
-import sharp from "sharp";
+import { uploadMultiFiles } from "../middleware/upload.file.middleware";
 import sanatization from "../utils/sanatization";
+import { uploadToCloudinary } from "../utils/cloudinary";
 
 class UsersServices {
   getAll = refactorServices.getAll<Users>(usersSchema);
@@ -30,11 +30,13 @@ class UsersServices {
   uploadImage=uploadMultiFiles(['image'],[{name:'image',maxCount:1}])
   saveImage=AsyncHandler(async(req:Request,res:Response,next:NextFunction)=>{
     if((req.files as any).image){
-      const fileName=`user-${Date.now()}-image.webp`
-      await sharp((req.files as any).image[0].buffer)
-      .webp({quality:90})
-      .toFile(`uploads/images/users/${fileName}`)
-      req.body.image=fileName
+      const filename=`user-${Date.now()}-profile`
+      const url = await uploadToCloudinary(
+        (req.files as any).image[0].buffer,
+        'profile',
+        filename
+      )
+      req.body.image=url
     }
     next()
   })
