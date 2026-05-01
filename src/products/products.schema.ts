@@ -28,13 +28,13 @@ productsSchema.pre<Products>(/^find/, function (next) {
   this.populate({ path: "subcategory", select: "name" });
   next();
 });
-const imageUrl = (document: Products) => {
-  if (document.cover)
-    document.cover = `${process.env.BASE_URL}/images/products/${document.cover}`;
-  if (document.images)
-    document.images = document.images.map(
-      (image) => `${process.env.BASE_URL}/images/products/${image}`
-    );
-};
-productsSchema.post("init", imageUrl).post("save", imageUrl);
+// const imageUrl = (document: Products) => {
+//   if (document.cover)
+//     document.cover = `${process.env.BASE_URL}/images/products/${document.cover}`;
+//   if (document.images)
+//     document.images = document.images.map(
+//       (image) => `${process.env.BASE_URL}/images/products/${image}`
+//     );
+// };
+// productsSchema.post("init", imageUrl).post("save", imageUrl);
 export default mongoose.model<Products>("products", productsSchema);

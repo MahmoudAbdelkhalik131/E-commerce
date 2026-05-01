@@ -22,7 +22,7 @@ const usersSchema = new mongoose.Schema<Users>(
       state: String,
       zip: String,
     }],
-    image: { type: String, default: "user-default.jpg" },
+    image: { type: String, default: "" },
     passwordChangedAt: Date,
     passwordResetCode: String,
     passwordResetCodeExpires: Date,
@@ -31,12 +31,12 @@ const usersSchema = new mongoose.Schema<Users>(
   { timestamps: true }
 );
 
-const imagesUrl = (document: Users) => {
-  if (document.image && document.image.startsWith("user"))
-    document.image = `${process.env.BASE_URL}/images/users/${document.image}`;
-};
+// const imagesUrl = (document: Users) => {
+//   if (document.image && document.image.startsWith("user"))
+//     document.image = `${process.env.BASE_URL}/images/users/${document.image}`;
+// };
 
-usersSchema.post("init", imagesUrl).post("save", imagesUrl);
+// usersSchema.post("init", imagesUrl).post("save", imagesUrl);
 usersSchema.pre<Users>("save", async function (next) {
   if (!this.isModified("password"))
     next();
