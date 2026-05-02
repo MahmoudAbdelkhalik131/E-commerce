@@ -12,7 +12,7 @@ class OrdersServices {
     next();
   };
   getAll = refactorServices.getAll<Orders>(ordersSchema);
-  getOne = refactorServices.getOne<Orders>(ordersSchema);
+  getOne = refactorServices.getOne<Orders>(ordersSchema,"items.product");
   createOrderCash = AsyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
       if (!req.user) {
