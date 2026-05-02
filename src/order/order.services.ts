@@ -12,7 +12,15 @@ class OrdersServices {
     next();
   };
   getAll = refactorServices.getAll<Orders>(ordersSchema);
-  getOne = refactorServices.getOne<Orders>(ordersSchema,"items.product");
+  getOne = AsyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const document = await ordersSchema.findById(req.params.id).populate("items.product");
+      if (!document) {
+        return next(new ApiErrors(`${req.__('not_found')}`, 400));
+      }
+      res.status(200).json({ data: document });
+    }
+  );
   createOrderCash = AsyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
       if (!req.user) {
