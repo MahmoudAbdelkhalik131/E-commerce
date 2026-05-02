@@ -39,5 +39,13 @@ orderRouter
     orderValidation.PayOrder,
     ordersServices.payOrder
   );
+orderRouter.route("/:id")
+.get(
+  authenticationServices.protectedRoutes,
+  authenticationServices.checkActive,
+  authenticationServices.allowedTo("admin", "employee", "user"),
+  ordersServices.getOne
+);
+
 
 export default orderRouter;
