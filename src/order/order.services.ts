@@ -8,19 +8,11 @@ import ApiErrors from "../utils/apiErrors";
 import productsSchema from "../products/products.schema";
 class OrdersServices {
   filterData = async (req: Request, res: Response, next: NextFunction) => {
-    if (req.user?.role === "user") req.filterById ={user:req.user._id};
+    if (req.user?.role === "user") req.filterById = { user: req.user._id };
     next();
   };
   getAll = refactorServices.getAll<Orders>(ordersSchema);
-  getOne = AsyncHandler(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const document = await ordersSchema.findById(req.params.id).populate("items.product");
-      if (!document) {
-        return next(new ApiErrors(`${req.__('not_found')}`, 400));
-      }
-      res.status(200).json({ data: document });
-    }
-  );
+  getOne = refactorServices.getOne<Orders>(ordersSchema);
   createOrderCash = AsyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
       if (!req.user) {
@@ -55,6 +47,15 @@ class OrdersServices {
       res.status(201).json({ data: order });
     },
   );
+  getAddress=AsyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const document = await ordersSchema.findById(req.params.id);
+      if (!document) {
+        return next(new ApiErrors(`${req.__('not_found')}`, 404));
+      }
+      res.status(200).json({ data: document.address });
+    }
+  )
   payOrder = AsyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
       const order = await ordersSchema.findByIdAndUpdate(
