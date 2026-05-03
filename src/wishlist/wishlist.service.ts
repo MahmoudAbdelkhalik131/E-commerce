@@ -9,7 +9,10 @@ class WishListServices {
   getWishList = AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const user = await usersSchema.findById(req.user?._id).populate('wishlist')
     if (!user) return next(new ApiErrors(`${req.__('not_found')}`, 404))
-    if (!user.wishlist || !user.wishlist.length)  res.status(200).json({ data: [] })
+    if (!user.wishlist || !user.wishlist.length) {
+      res.status(200).json({ data: [] })
+      return
+    }
     res.status(200).json({ data: user.wishlist })
   })
   addToWishList = AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -20,7 +23,7 @@ class WishListServices {
     res.status(200).json({ data: user.wishlist })
   })
   removeFromWishList = AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const user = await usersSchema.findByIdAndUpdate({ _id: req.user?._id }, {
+    const user = await usersSchema.findByIdAndUpdate(req.user?._id, {
       $pull: { wishlist: req.params.productId }
     }, { new: true }).populate('wishlist')
     if (!user) return next(new ApiErrors(`${req.__('not_found')}`, 404))
