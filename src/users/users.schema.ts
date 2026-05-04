@@ -22,7 +22,7 @@ const usersSchema = new mongoose.Schema<Users>(
       state: String,
       zip: String,
     }],
-    image: { type: String, default: "" },
+    image: { type: String, default: "https://res.cloudinary.com/dlqfpuwtk/image/upload/v1777906613/Gemini_Generated_Image_glnipjglnipjglni_uv25sy.png" },
     passwordChangedAt: Date,
     passwordResetCode: String,
     passwordResetCodeExpires: Date,
