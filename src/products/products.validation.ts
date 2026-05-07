@@ -59,10 +59,11 @@ class Productsvalidation {
       .custom(async (val, { req }) => {
         const product = await productsSchema.findById(req.params?.id);
         const category = await categoriesSchema.findById(val);
+        const subcat=await subcategoriesSchema.findOne({category:val})
         if (!category) throw new Error("Catgory DoesNot exits");
         if (
           category._id.toString() !==
-          product?.subcategory.category._id.toString()
+          subcat?.category._id.toString()
         )
           throw new Error("subcategory doesn't exit in that category");
         return true;

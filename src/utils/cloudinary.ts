@@ -15,7 +15,7 @@ cloudinary.config({
  */
 export const uploadToCloudinary = (
   buffer: Buffer,
-  folder: "products" | "profile" | "images" | "categories",
+  folder: "products" | "profile" | "images" | "categories" | "subcategories",
   filename: string
 ): Promise<string> => {
   return new Promise((resolve, reject) => {

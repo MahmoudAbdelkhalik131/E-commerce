@@ -1,4 +1,6 @@
 import AsyncHandler from "express-async-handler";
+import { uploadMultiFiles } from "../middleware/upload.file.middleware";
+import { uploadToCloudinary } from "../utils/cloudinary";
 import { Request, Response, NextFunction } from "express";
 import Subcategories from "./subcategories.interface";
 import subcategoriesSchema from "./subcategories.schema";
@@ -22,6 +24,21 @@ class SubCategoriesServices {
   createOne = refactorServices.create<Subcategories>(subcategoriesSchema);
   updateOne = refactorServices.updateOne<Subcategories>(subcategoriesSchema);
   deleteOne = refactorServices.deleteOne<Subcategories>(subcategoriesSchema);
+
+  uploadImage = uploadMultiFiles(["image"], [{ name: "image", maxCount: 1 }]);
+
+  saveImage = AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    if (req.files && (req.files as any).image) {
+      const filename = `subcategory-${Date.now()}`;
+      const url = await uploadToCloudinary(
+        (req.files as any).image[0].buffer,
+        "subcategories",
+        filename
+      );
+      req.body.image = url;
+    }
+    next();
+  });
 }
 
 const subCategoriesServices = new SubCategoriesServices();

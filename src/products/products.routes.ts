@@ -12,6 +12,6 @@ productsRouter
 productsRouter
   .route("/:id")
   .get(productsValidation.getOne,productsServices.getOne)
-  .put(authenticationServices.protectedRoutes,authenticationServices.checkActive,authenticationServices.allowedTo("admin","employee"),productsValidation.updateOne,productsServices.updateOne)
+  .put(authenticationServices.protectedRoutes,authenticationServices.checkActive,authenticationServices.allowedTo("admin","employee"),productsServices.uploadCoverAndImages,productsServices.saveImage,productsValidation.updateOne,productsServices.updateOne)
   .delete(authenticationServices.protectedRoutes,authenticationServices.checkActive,authenticationServices.allowedTo("admin","employee"),productsValidation.deleteOne,productsServices.deleteOne);
 export default productsRouter
