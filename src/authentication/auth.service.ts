@@ -90,7 +90,7 @@ class AuthenticationServices {
         if (!user) return next(new ApiErrors(`${req.__('check_login check_code_valid')}`, 403))
         user.passwordResetCodeVerify = true
         if (user.image && (user.image.startsWith(`${process.env.BASE_URL}`)))
-            user.image != user.image.split('/').pop()
+            user.image = user.image.split('/').pop() || ""
         await user.save({ validateModifiedOnly: true })
         res.status(200).json({ message: "code verified successfully" })
     })
@@ -111,8 +111,8 @@ class AuthenticationServices {
             user.passwordResetCodeExpires = Date.now() + 10 * 60 * 1000
             user.passwordResetCodeVerify = false
             if (user.image && (user.image.startsWith(`${process.env.BASE_URL}`)))
-                user.image != user.image.split('/').pop()
-            user.save({ validateModifiedOnly: true })
+                user.image = user.image.split('/').pop() || ""
+            await user.save({ validateModifiedOnly: true })
 
         }
         catch (e) {

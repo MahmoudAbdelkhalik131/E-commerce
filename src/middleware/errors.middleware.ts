@@ -24,6 +24,9 @@ const globalErrors = (
   res: express.Response,
   next: express.NextFunction
 ) => {
+  if (res.headersSent) {
+    return next(err);
+  }
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "Error";
   if(err.name==='TokenExpiredError'||err.name==='JsonWebTokenError'){
