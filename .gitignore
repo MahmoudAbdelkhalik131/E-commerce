@@ -3,3 +3,5 @@ node_modules
 dist
 packege-lock.json
 uploads
+CODE_REVIEW_REPORT.md
+.gitignore

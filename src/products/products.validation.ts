@@ -7,15 +7,15 @@ import productsSchema from "./products.schema";
 class Productsvalidation {
   //price discont priceAfterDiccount quantity sold rateAvg rating name description
   creat = [
-     body('price').notEmpty().withMessage("price required"),
-     body('discount').optional(),
-     body('priceAfterDiscount').optional(),
-     body('quantity').notEmpty().withMessage('quantity is required'),
-     body('sold') .optional(),
-     body('rateAvg').optional(),
-     body('rating').optional(),
+    body('price').notEmpty().withMessage("price required"),
+    body('discount').optional(),
+    body('priceAfterDiscount').optional(),
+    body('quantity').notEmpty().withMessage('quantity is required'),
+    body('sold').optional(),
+    body('rateAvg').optional(),
+    body('rating').optional(),
     body("name").notEmpty().withMessage("name is required"),
-     body('description').notEmpty().withMessage('des is required'),
+    body('description').notEmpty().withMessage('des is required'),
     body("category")
       .notEmpty()
       .withMessage("category is required")
@@ -67,7 +67,7 @@ class Productsvalidation {
           throw new Error("subcategory doesn't exit in that category");
         return true;
       }),
-      param("id")
+    param("id")
       .isMongoId()
       .withMessage("Product not found"),
     body("subcategory").optional().isMongoId().withMessage("Invalid Id")
@@ -84,20 +84,20 @@ class Productsvalidation {
       }),
     validatorMiddleware,
   ];
-  deleteOne=[
+  deleteOne = [
     param('id').isMongoId().withMessage('Invalid Id')
-    .custom(async (val, { req }) => {
+      .custom(async (val, { req }) => {
         const product = await productsSchema.findById(req.params?.id);
         if (!product) throw new Error("Product DoesNot exits")
-        }),validatorMiddleware
+      }), validatorMiddleware
   ]
-  getOne=[
+  getOne = [
     param('id').isMongoId().withMessage("Invalid Id")
-    .custom(async(val)=>{
-        const product=await productsSchema.findById(val)
-        if(!product) throw new Error("Product doesn't exit")
+      .custom(async (val) => {
+        const product = await productsSchema.findById(val)
+        if (!product) throw new Error("Product doesn't exit")
         return true
-    })
+      })
   ]
 }
 const productsValidation = new Productsvalidation();

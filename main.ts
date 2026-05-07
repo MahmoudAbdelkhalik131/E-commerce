@@ -36,7 +36,7 @@ app.use(
     ],
     credentials: true,
     optionsSuccessStatus: 204,
-    maxAge: 86400, // 24 hours cache for preflight requests
+    maxAge: 86400, 
   })
 );
 app.options("*", cors());
