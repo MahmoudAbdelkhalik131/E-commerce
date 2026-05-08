@@ -19,13 +19,29 @@ export const uploadToCloudinary = (
   filename: string
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
+    const defaults: Record<string, { maxWidth: number; quality: number }> = {
+      products: { maxWidth: 1200, quality: 82 },
+      profile: { maxWidth: 400, quality: 80 },
+      images: { maxWidth: 1920, quality: 85 },
+      categories: { maxWidth: 800, quality: 80 },
+      subcategories: { maxWidth: 800, quality: 80 },
+    };
+
+    const folderDefaults = defaults[folder];
+
     const uploadStream = cloudinary.uploader.upload_stream(
+
       {
         folder: `uploads/${folder}`,
         public_id: filename,
         resource_type: "image",
         format: "webp",
-        transformation: [{ quality: 100 }],
+        transformation: [{
+          width: folderDefaults.maxWidth,
+          crop: "limit",
+          quality: folderDefaults.quality,
+          fetch_format: "auto",
+        }],
       },
       (error, result) => {
         if (error || !result) return reject(error);
