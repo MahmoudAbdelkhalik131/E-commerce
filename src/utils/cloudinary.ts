@@ -25,7 +25,7 @@ export const uploadToCloudinary = (
         public_id: filename,
         resource_type: "image",
         format: "webp",
-        transformation: [{ quality: 90 }],
+        transformation: [{ quality: 100 }],
       },
       (error, result) => {
         if (error || !result) return reject(error);
