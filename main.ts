@@ -66,19 +66,7 @@ routes(app);
 server = app.listen(process.env.PORT, () => {
   console.log(`server started on port ${process.env.PORT}`);
 });
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
 
-// require the Twilio module and create a REST client
-const client = require('twilio')(accountSid, authToken);
-
-client.messages
-  .create({
-    to: '+20 10 50831511',
-    from: process.env.TWILIO_PHONE_NUMBER,
-    body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
-  })
-  .then((message:{sid:string}) => console.log(message.sid));
 process.on("unhandledRejection", (err: Error) => {
   console.error(`unhandledRejection ${err.name} | ${err.message}`);
   server.close(() => {
