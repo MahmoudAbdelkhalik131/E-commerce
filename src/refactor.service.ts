@@ -9,8 +9,9 @@ class RefactorServices {
     AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
       let filterData: any = {}
       if (req.filterById) filterData = req.filterById
-      const documentCount = await model.find(filterData).countDocuments()
-      const features = new Features(model.find(filterData), req.query).filter().sort().limitFields().search(modelName!).pagination(documentCount)
+      const features = new Features(model.find(filterData), req.query).filter().sort().limitFields().search(modelName!)
+      const documentCount = await features.mongooseQuery.clone().countDocuments()
+      features.pagination(documentCount)
       const { mongooseQuery, paginationResult } = features
       const documents: modelType[] = await mongooseQuery;
       if (!documents) {

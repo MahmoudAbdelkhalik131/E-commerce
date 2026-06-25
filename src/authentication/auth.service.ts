@@ -32,9 +32,15 @@ class AuthenticationServices {
 
     })
     sginUp = AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-        const user: Users = await usersSchema.create(req.body)
+        const user: Users = await usersSchema.create({
+            username:req.body.username,
+            email: req.body.email,
+            name: req.body.name,
+            password: req.body.password,
+            phone:req.body.phone
+        })
         user.password = await bcrypt.hash(user.password, 15)
-        res.status(200).json({ data: user })
+        res.status(200).json({ data: user ,message:req.__("success_signup") })
     })
     protectedRoutes = AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
         let token: string = ''

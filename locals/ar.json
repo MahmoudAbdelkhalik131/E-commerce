@@ -1,7 +1,7 @@
 {
 	"--------------------------------------------------------------------": "Validation",
 	"not_found": "لم يتم العثور على شئ",
-	"wrong_password":"الرجاء ادخال كلمة السر الحالية",
+	"wrong_password": "الرجاء ادخال كلمة السر الحالية",
 	"invalid_id": "رقم تعريفي خاطئ",
 	"validation_field": "الحقل مطلوب",
 	"review_already_exists": "لقد قمت بمراجعة هذا المنتج من قبل",
@@ -9,6 +9,7 @@
 	"validation_name": "هذا الاسم موجود بالفعل",
 	"validation_email_check": "البريد الإلكتروني موجود بالفعل",
 	"validation_length_short": "الطول بتراوح بين 10, 50 حرف",
+	"validation_length_phone": "الطول بتراوح بين 11, 15 رقم",
 	"validation_length_medium": "الطول بتراوح بين 10, 150 حرف",
 	"validation_length_long": "الطول بتراوح بين 10, 500 حرف",
 	"validation_length_password": "كلمة المرور من 6 إلى 20 رقم",
@@ -30,5 +31,8 @@
 	"allowed_to": "غير مسموح لك بالقيام بهذه العملية",
 	"not_authorized": "غير مصرح لك بالقيام بهذه العملية",
 	"cart_empty": "سلة التسوق فارغة",
-	"wishlist_empty": "قائمة الأمنيات فارغة"
+	"wishlist_empty": "قائمة الأمنيات فارغة",
+	"UserName already exist": "هذا الاسم موجود بالفعل",
+	"success_signup": "  تم تسجيل بنجاح  يرجي تسجيل الدخول",
+	"review_not_found": "review_not_found"
 }

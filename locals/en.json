@@ -9,6 +9,7 @@
 	"validation_name": "This name already exits",
 	"validation_email_check": "Email is Already Exist",
 	"validation_length_short": "length is between 10, 50",
+	"validation_length_phone": "length must be between 11 ,15",
 	"validation_length_medium": "length is between 10, 150",
 	"validation_length_long": "length is between 10, 500",
 	"validation_length_password": "Password is between 6, 20",
@@ -31,5 +32,6 @@
 	"UserName already exist": "UserName already exist",
 	"not_authorized": "You are not authorized to perform this action",
 	"cart_empty": "Your cart is empty",
-	"wishlist_empty": "Your wishlist is empty"
+	"wishlist_empty": "Your wishlist is empty",
+	"success_signup":"signed up successfully , please login"
 }

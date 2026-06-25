@@ -36,12 +36,13 @@ class ReviewsValidation {
     param("id")
       .isMongoId()
       .withMessage((val, { req }) => req.__("invalid_id"))
-      .custom(async(val,{req})=>{
+      .custom(async (val, { req }) => {
         const review = await reviewSchema.findById(val.toString())
-        if(!review){
+        if (!review) {
           throw new Error(req.__("review_not_found"));
         }
-        if ((String(review.user._id) !== req.user._id.toString()) && req.user.role === "user") {
+        const reviewUserId = review.user ? (review.user as any)._id?.toString() : null;
+        if (req.user.role === "user" && reviewUserId !== req.user._id.toString()) {
           throw new Error(req.__("not_authorized"));
         }
         return true;
@@ -62,13 +63,17 @@ class ReviewsValidation {
       .isMongoId()
       .withMessage((val, { req }) => req.__("invalid_id"))
       .custom(async (val, { req }) => {
-        const review = await reviewSchema.findById(val);
-        if (
-          String(review?.user._id) !== req.user._id.toString() &&
-          req.user.role !== "admin"
-        ) {
-          throw new Error(req.__("not_authorized"));
+        const review = await reviewSchema.findById(val.toString());
+        if (!review) {
+          throw new Error(req.__("review_not_found"));
         }
+        if (req.user.role === "user") {
+          const reviewUserId = review.user ? (review.user as any)._id?.toString() : null;
+          if (reviewUserId !== req.user._id.toString()) {
+            throw new Error(req.__("not_authorized"));
+          }
+        }
+        return true;
       }),
     validatorMiddleware,
   ];

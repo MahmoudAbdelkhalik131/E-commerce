@@ -20,6 +20,7 @@ class AuthValidation {
       .isEmail()
       .withMessage((val, { req }) => req.__("validation_value"))
       .custom(async (val: string, { req }) => {
+        console.log(val)
         const user = await usersSchema.findOne({ email: val });
         if (user) throw new Error(`${req.__("validation_email_check")}`);
         return true;
@@ -32,20 +33,21 @@ class AuthValidation {
     body("password")
       .notEmpty()
       .withMessage((val, { req }) => req.__("validation_field"))
-      .isLength({ min: 6, max: 20 })
-      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
-      .withMessage("Password must contain at least one uppercase letter, one lowercase letter, one number and one special character")
+      .isLength({ min: 8, max: 20 })
       .withMessage((val, { req }) => req.__("validation_length_password")),
     body("confirmPassword")
       .notEmpty()
       .withMessage((val, { req }) => req.__("validation_field"))
-      .isLength({ min: 6, max: 20 })
-      .withMessage((val, { req }) => req.__("validation_length_password"))
       .custom((val: string, { req }) => {
         if (val !== req.body.password)
           throw new Error(`${req.__("validation_password_match")}`);
         return true;
       }),
+    body("phone")
+      .notEmpty()
+      .withMessage((val, { req }) => req.__("validation_field"))
+      .isLength({ min: 11, max: 15 })
+      .withMessage((val, { req }) => req.__("validation_length_phone")),
     validatorMiddleware,
   ];
   logIn = [

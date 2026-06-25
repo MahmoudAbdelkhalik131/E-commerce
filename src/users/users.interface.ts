@@ -7,6 +7,7 @@ interface Users extends Document{
         password: string;
         readonly role: Role;
         readonly active: boolean;
+        readonly phone: boolean;
         googleId:string;
         address: Address[];
         wishList:mongoose.Schema.Types.ObjectId[];

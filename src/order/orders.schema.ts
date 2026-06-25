@@ -26,7 +26,7 @@ const ordersSchema = new mongoose.Schema<Orders>({
 
 ordersSchema.pre<Orders>(/^find/, function (next) {
     this.populate({path: 'items.product', select: 'name cover'});
-    this.populate({path: 'user', select: 'name image'});
+    this.populate({path: 'user', select: 'name phone'});
     next();
 });
 

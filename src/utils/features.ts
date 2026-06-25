@@ -42,8 +42,9 @@ class Features {
     return this;
   }
   pagination(documentsCount: number) {
-    const page = this.queryString.page * 1 || 1;
-    const limit = this.queryString.limit * 1 || 20;
+    const page = Math.max(1, parseInt(this.queryString.page, 10) || 1);
+    const rawLimit = parseInt(this.queryString.limit, 10) || 8;
+    const limit = Math.min(Math.max(1, rawLimit), 8);
     const skip = (page - 1) * limit;
     const endIndex = page * limit;
     const pagination: any = {};

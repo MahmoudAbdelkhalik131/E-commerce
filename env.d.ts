@@ -20,6 +20,9 @@ declare global {
             readonly CLOUDINARY_API_KEY: string
             readonly CLOUDINARY_API_SECRET: string;
             readonly ALLOWED_ORIGINS:string;
+            readonly TWILIO_ACCOUNT_SID:string;
+            readonly TWILIO_AUTH_TOKEN:string;
+            readonly TWILIO_PHONE_NUMBER:string;
         }
     }
 }
