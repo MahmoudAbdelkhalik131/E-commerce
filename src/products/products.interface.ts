@@ -3,6 +3,7 @@ import Categories from "../categories/categories.interface"
 import Subcategories from "../subcategories/subcategories.interface"
 interface Products extends Document{
 readonly name:string,
+readonly size:string,
 readonly description:string,
 readonly category:Categories,
 readonly subcategory:Subcategories,

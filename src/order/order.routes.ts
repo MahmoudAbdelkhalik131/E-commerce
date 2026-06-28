@@ -39,6 +39,15 @@ orderRouter
     orderValidation.PayOrder,
     ordersServices.payOrder
   );
+orderRouter
+  .route("/:id/deposite")
+  .patch(
+    authenticationServices.protectedRoutes,
+    authenticationServices.checkActive,
+    authenticationServices.allowedTo("admin","employee"),
+    orderValidation.DepositeOrder,
+    ordersServices.depositePaid
+  );
 orderRouter.route("/:id")
 .get(
   authenticationServices.protectedRoutes,

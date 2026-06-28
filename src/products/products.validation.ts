@@ -7,18 +7,19 @@ import productsSchema from "./products.schema";
 class Productsvalidation {
   //price discont priceAfterDiccount quantity sold rateAvg rating name description
   creat = [
-    body('price').notEmpty().withMessage("price required"),
+    body('price').notEmpty().withMessage((req)=>{req.__("validation_field")}),
     body('discount').optional(),
     body('priceAfterDiscount').optional(),
-    body('quantity').notEmpty().withMessage('quantity is required'),
+    body('quantity').notEmpty().withMessage((req)=>{req.__("validation_field")}),
     body('sold').optional(),
     body('rateAvg').optional(),
     body('rating').optional(),
-    body("name").notEmpty().withMessage("name is required"),
-    body('description').notEmpty().withMessage('des is required'),
+    body("name").notEmpty().withMessage((req)=>{req.__("validation_field")}),
+    body("size").notEmpty().withMessage((req)=>{req.__("validation_field")}),
+    body('description').notEmpty().withMessage((req)=>{req.__("validation_field")}),
     body("category")
       .notEmpty()
-      .withMessage("category is required")
+      .withMessage((req)=>{req.__("validation_field")})
       .isMongoId()
       .withMessage("Invalid Id")
       .custom(async (val) => {
@@ -28,7 +29,7 @@ class Productsvalidation {
       }),
     body("subcategory")
       .notEmpty()
-      .withMessage("subcategory is required")
+      .withMessage((req)=>{req.__("validation_field")})
       .isMongoId()
       .withMessage("Invalid Id")
       .custom(async (val, { req }) => {
@@ -51,6 +52,7 @@ class Productsvalidation {
     body("rateAvg").optional(),
     body("rating").optional(),
     body("name").optional(),
+    body("size").optional(),
     body("description").optional(),
     body("category")
       .optional()

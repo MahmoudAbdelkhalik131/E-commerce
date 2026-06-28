@@ -10,6 +10,9 @@ export interface Orders extends Document {
     isPaid: boolean;
     paidAt: Date;
     isDelivered: boolean;
+    isDepositePaid: boolean;
+    DepositeAmount:number;
+    DepositePaidAt:Date;
     deliveredAt: Date;
     payment: 'cash' | 'card'
     user: Users;

@@ -33,6 +33,7 @@ class OrdersServices {
         items: cart.items,
         itemsPrice: itemsPrice,
         totalPrice: itemsPrice + taxPrice,
+        DepositeAmount:itemsPrice*0.5,
         address: req.body.address,
         taxPrice: taxPrice,
       });
@@ -82,6 +83,20 @@ class OrdersServices {
       res.status(200).json({ success: true });
     },
   );
+  depositePaid = AsyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const order = await ordersSchema.findByIdAndUpdate(
+        req.params.id,
+        {
+          isDepositePaid: true,
+          DepositePaidAt: Date.now(),
+        },
+        { new: true },
+      );
+      res.status(200).json({ success: true });
+    },
+  );
+
 }
 const ordersServices = new OrdersServices();
 export default ordersServices;

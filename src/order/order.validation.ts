@@ -33,6 +33,14 @@ class OrderValidation {
       .withMessage((value, { req }) => req.__("invalid_id")),
     validatorMiddleware,
   ];
+  DepositeOrder = [
+    param("id")
+      .notEmpty()
+      .withMessage((value, { req }) => req.__("validation_field"))
+      .isMongoId()
+      .withMessage((value, { req }) => req.__("invalid_id")),
+    validatorMiddleware,
+  ];
 }
 
 const orderValidation = new OrderValidation();

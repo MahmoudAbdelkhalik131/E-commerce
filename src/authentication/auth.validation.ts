@@ -47,7 +47,9 @@ class AuthValidation {
       .notEmpty()
       .withMessage((val, { req }) => req.__("validation_field"))
       .isLength({ min: 11, max: 15 })
-      .withMessage((val, { req }) => req.__("validation_length_phone")),
+      .withMessage((val, { req }) => req.__("validation_length_phone"))
+      .matches(/^[0-9]+$/)
+      .withMessage((val, { req }) => req.__("validation_phone_format")),
     validatorMiddleware,
   ];
   logIn = [
