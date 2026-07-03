@@ -32,5 +32,4 @@ ordersSchema.pre<Orders>(/^find/, function (next) {
     this.populate({path: 'user', select: 'name phone'});
     next();
 });
-
 export default mongoose.model<Orders>('orders', ordersSchema);

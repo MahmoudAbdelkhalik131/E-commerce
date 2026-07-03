@@ -6,6 +6,7 @@ import AsyncHandler from "express-async-handler";
 import cartSchema from "../Cart/Cart.Schema";
 import ApiErrors from "../utils/apiErrors";
 import productsSchema from "../products/products.schema";
+import usersSchema from "../users/users.schema";
 class OrdersServices {
   filterData = async (req: Request, res: Response, next: NextFunction) => {
     if (req.user?.role === "user") req.filterById = { user: req.user._id };
@@ -20,21 +21,45 @@ class OrdersServices {
       }
       const cart = await cartSchema.findOne({ user: req.user?._id });
       if (!cart) {
-        return next(new ApiErrors("Cart is empty", 404));
+        return next(new ApiErrors(req.__("السلة فارغة"), 404));
       }
+
+      // Fetch user to lookup the address details using the ID
+      const user = await usersSchema.findById(req.user._id);
+      if (!user || !user.address) {
+        return next(new ApiErrors("User or addresses not found", 404));
+      }
+
+      const selectedAddress = user.address.find(
+        (addr: any) => addr._id.toString() === req.body.address
+      );
+      if (!selectedAddress) {
+        return next(new ApiErrors("Address not found", 404));
+      }
+
       const itemsPrice: number = Number(
         cart.totelPriceAfterDiscount != null
           ? cart.totelPriceAfterDiscount
           : cart.totelPrice
       ) || 0;
-      const taxPrice = Number(cart.taxPrice) || 0;
+
+      let taxPrice = Number(cart.taxPrice) || 0;
+      if (selectedAddress.state === "محافظة الشرقية") {
+        taxPrice = 0;
+      }
+
       const order = await ordersSchema.create({
         user: req.user._id,
         items: cart.items,
         itemsPrice: itemsPrice,
         totalPrice: itemsPrice + taxPrice,
-        DepositeAmount:itemsPrice*0.5,
-        address: req.body.address,
+        DepositeAmount: itemsPrice * 0.5,
+        address: {
+          street: selectedAddress.street,
+          city: selectedAddress.city,
+          state: selectedAddress.state,
+          zip: selectedAddress.zip,
+        },
         taxPrice: taxPrice,
       });
       const bulkupdate = cart.items.map((item) => ({
@@ -96,7 +121,6 @@ class OrdersServices {
       res.status(200).json({ success: true });
     },
   );
-
 }
 const ordersServices = new OrdersServices();
 export default ordersServices;

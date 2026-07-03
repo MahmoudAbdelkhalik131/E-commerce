@@ -9,13 +9,12 @@ class CartServices {
     async (req: Request, res: Response, next: NextFunction) => {
       let cart: any = await cartSchema.findOne({ user: req.user!._id });
       if (!cart) {
-        res
-          .status(200)
-          .json({ data: { items: [], totelPrice: 0, taxPrice: 0 } });
-      }
+        return next(new ApiErrors(req.__("السلة فارغة"), 404))
+          }
       cart.totelPrice = this.calculateTotalPRi(cart.items);
-      cart.taxPrice = cart.totelPrice * 0.07;
+      cart.taxPrice = cart.totelPrice >= 1000 ? 0 : 100;
       await cart.save();
+
       res.status(200).json({ data: cart });
     },
   );
@@ -71,7 +70,7 @@ class CartServices {
         }
       }
       cart.totelPrice = this.calculateTotalPRi(cart.items);
-      cart.taxPrice = cart.totelPrice * 0.07;
+      cart.taxPrice = cart.totelPrice >= 1000 ? 0 : 100;
       await cart.save();
       res.status(200).json({ data: cart, lenght: cart.items.length });
     },
@@ -97,8 +96,9 @@ class CartServices {
         cart.items.splice(Index, 1);
       }
       cart.totelPrice = this.calculateTotalPRi(cart.items);
-      cart.taxPrice = cart.totelPrice * 0.07;
+      cart.taxPrice = cart.totelPrice >= 1000 ? 0 : 100;
       await cart.save();
+
       res.status(200).json({ data: cart, lenght: cart.items.length });
     },
   );
@@ -122,9 +122,8 @@ class CartServices {
         cart.items[Index].quantity = qty;
       }
       cart.totelPrice = this.calculateTotalPRi(cart.items);
-      cart.taxPrice = cart.totelPrice * 0.07;
+      cart.taxPrice = cart.totelPrice >= 1000 ? 0 : 100;
       await cart.save();
-
       res.status(200).json({ data: cart, lenght: cart.items.length });
     },
   );
