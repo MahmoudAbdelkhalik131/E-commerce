@@ -28,23 +28,20 @@ class CartServices {
   );
   addToCart = AsyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-      console.log("add to cart called");
       const product: any = await productsSchema.findById({
         _id: req.body.productId,
       });
       if (!product) {
         return next(new ApiErrors(req.__("not_found"), 404));
       }
-      console.log("add to cart called2");
       let cart = await cartSchema.findOne({ user: req.user?._id });
       if (!cart) {
-        console.log("add to cart called");
         cart = await cartSchema.create({
           user: req.user?._id,
           items: [
             {
               product: product?._id,
-              price: product.priceAfterDiscount
+              price: product.priceAfterDiscount>0
                 ? product.priceAfterDiscount
                 : product.price,
               quantity: req.body.quantity || 1,
@@ -53,12 +50,12 @@ class CartServices {
         });
       } else {
         const Index = cart.items.findIndex((item: any) => {
-          return product!._id.toString() === item.product!._id.toString();
+          return product!._id.toString() === item.product!._id?.toString();
         });
         if (Index === -1) {
           cart.items.push({
             product: product?._id,
-            price: product.priceAfterDiscount
+            price: product.priceAfterDiscount>0
               ? product.priceAfterDiscount
               : product.price,
             quantity: req.body.quantity || 1,
@@ -78,7 +75,6 @@ class CartServices {
   removeFromCart = AsyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
       const product: any = await productsSchema.findById(req.body.productId);
-      console.log("remove from cart called");
       if (!product) {
         return next(new ApiErrors(req.__("not_found"), 404));
       }
@@ -87,7 +83,7 @@ class CartServices {
         return next(new ApiErrors("your cart is empty", 404));
       }
       const Index = cart.items.findIndex((item: any) => {
-        return product._id.toString() === item.product._id.toString();
+        return product._id.toString() === item.product!._id?.toString();
       });
       if (Index === -1) {
         return next(new ApiErrors("There is no such product", 404));
@@ -113,7 +109,7 @@ class CartServices {
         return next(new ApiErrors("your cart is empty", 404));
       }
       const Index = cart.items.findIndex((item: any) => {
-        return product._id.toString() === item.product._id.toString();
+        return product._id.toString() === item.product!._id?.toString();
       });
       if (Index === -1) {
         return next(new ApiErrors("There is no such product", 404));

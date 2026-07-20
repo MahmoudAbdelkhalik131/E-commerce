@@ -35,7 +35,7 @@ class RefactorServices {
       if (!documents) {
         return next(new ApiErrors(`${req.__('not_found')}`, 400))
       }
-      res.status(200).json({ data: sanatization.User(documents) });
+      res.status(201).json({ data: sanatization.User(documents) });
     });
   updateOne = <modelType>(model: mongoose.Model<any>) =>
     AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {

@@ -12,7 +12,7 @@ const CartSchema=new mongoose.Schema<Carts>({
     user:{type:mongoose.Schema.Types.ObjectId,ref:'users'}
 },{timestamps:true})
 CartSchema.pre<Carts>(/^find/,function(next){
-this.populate({path:'items.product',select:"name cover quantity"})
+this.populate({path:'items.product',select:"name cover quantity _id"})
 next()
 })
 const cartSchema=mongoose.model('carts',CartSchema)

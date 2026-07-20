@@ -5,6 +5,7 @@ import Products from "./products.interface";
 import productsSchema from "./products.schema";
 import { Request, Response, NextFunction } from "express";
 import { uploadToCloudinary } from "../utils/cloudinary";
+import ApiErrors from "../utils/apiErrors";
 
 class ProductsServices {
   getAll = refactorServices.getAll<Products>(productsSchema, "products");
@@ -18,7 +19,7 @@ class ProductsServices {
     [
       { name: "cover", maxCount: 1 },
       { name: "images", maxCount: 5 },
-    ]
+    ],
   );
 
   saveImage = AsyncHandler(
@@ -30,7 +31,7 @@ class ProductsServices {
           const url = await uploadToCloudinary(
             (req.files as any).cover[0].buffer,
             "products",
-            filename
+            filename,
           );
           req.body.cover = url;
         }
@@ -44,15 +45,55 @@ class ProductsServices {
               const url = await uploadToCloudinary(
                 image.buffer,
                 "products",
-                filename
+                filename,
               );
               req.body.images.push(url);
-            })
+            }),
           );
         }
       }
       next();
-    }
+    },
+  );
+  addPriceAfterDiscount = AsyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const product = await productsSchema.findById(req.params.id);
+      if (!product) {
+        return next(new ApiErrors("Item not found", 404));
+      }
+      const { priceAfterDiscount } = req.body;
+      if (priceAfterDiscount > product.price ) {
+        return next(
+          new ApiErrors(
+            "لازالة الخصم قم بوضع سعر المنتج فقط",
+            400,
+          ),
+        );
+      }
+      if (priceAfterDiscount <= product.price/2 ) {
+        return next(
+          new ApiErrors(
+            "اعلي قيمة للخصم ممكن وضعها هي نصف سعر المنتج",
+            400,
+          ),
+        );
+      }
+      if (priceAfterDiscount < 0) {
+        return next(
+          new ApiErrors("قيمة الخصم يجب ان تكون اكبر من 0  ", 400),
+        );
+      }
+      const discount = Math.floor(((product.price - priceAfterDiscount) / product.price) * 100);
+      const updated = await productsSchema.findByIdAndUpdate(
+        req.params.id,
+        {
+          priceAfterDiscount: priceAfterDiscount,
+          discount: discount
+        },
+        { new: true, runValidators: true },
+      );
+      res.status(200).json({ data: updated });
+    },
   );
 }
 

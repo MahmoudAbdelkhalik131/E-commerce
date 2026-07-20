@@ -14,7 +14,7 @@
 	"validation_length_long": "الطول بتراوح بين 10, 500 حرف",
 	"validation_length_password": "كلمة المرور من 6 إلى 20 رقم",
 	"validation_password_match": "كلمة المرور غير متطابقة",
-	"validation_phone_format":"رقم هاتف غير صالح",
+	"validation_phone_format": "رقم هاتف غير صالح",
 	"-----------------------------------------------------------------": "ErrorHandling",
 	"session_expired": "تم إنتهاء مدة الصلاحية. برجاء تسجيل الدخول مجدداً",
 	"----------------------------------------------------------------": "Authentication",
@@ -35,5 +35,6 @@
 	"wishlist_empty": "قائمة الأمنيات فارغة",
 	"UserName already exist": "هذا الاسم موجود بالفعل",
 	"success_signup": "  تم تسجيل بنجاح  يرجي تسجيل الدخول",
-	"review_not_found": "review_not_found"
+	"review_not_found": "review_not_found",
+	"السلة فارغة": "السلة فارغة"
 }

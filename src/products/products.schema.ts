@@ -9,7 +9,7 @@ const productsSchema = new mongoose.Schema<Products>(
     description: { type: String, trim: true },
     price: { type: Number },
     discount: { type: Number },
-    priceAfterDiscount: { type: Number },
+    priceAfterDiscount: { type: Number ,default:0},
     cover: { type: String, default: "https://res.cloudinary.com/dlqfpuwtk/image/upload/v1777906613/Gemini_Generated_Image_glnipjglnipjglni_uv25sy.png" },
     images: { type: [String] },
     rateAvg: { type: Number, default: 0 },
